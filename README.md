@@ -10,5 +10,5 @@ Findsecret requires 2 parameters to run: -i (input), -o (output).
 
 ### For example 
 `findsecret -i https://somedomain/something.js` </br>
-`findsecret -i main.js -o result.txt`
+`findsecret -i main.js -o result.txt` </br>
 `findsecret -i domains.txt -o result.txt`
