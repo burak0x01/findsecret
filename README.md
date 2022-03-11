@@ -9,6 +9,6 @@ Find secret keys from JS file
 Findsecret requires 2 parameters to run: -i (input), -o (output).
 
 ### For example 
-`findsecret -i https://somedomain/something.js` </br>
-`findsecret -i main.js -o result.txt` </br>
+`findsecret -i https://somedomain/something.js` </br> </br>
+`findsecret -i main.js -o result.txt` </br> </br>
 `findsecret -i domains.txt -o result.txt`
