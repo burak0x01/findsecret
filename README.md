@@ -7,7 +7,7 @@ Find secret keys from JS file
 2. `go install github.com/burak0x01/findsecret@latest`
 
 ### From Binary
-You can download the pre-built binaries from the releases page and run. For example: </br>
+You can download the pre-built binaries from the releases page and run. For example: </br> </br>
 `unzip findsecret_linux_amd64.zip` </br>
 `mv findsecret /usr/bin` </br>
 `findsecret -h`
