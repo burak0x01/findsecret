@@ -16,6 +16,6 @@ You can download the pre-built binaries from the releases page and run. For exam
 Findsecret requires 2 parameters to run: -i (input), -o (output).
 
 ### For example 
-`findsecret -i https://somedomain/something.js` </br> </br>
-`findsecret -i main.js -o result.txt` </br> </br>
-`findsecret -i domains.txt -o result.txt`
+`findsecret -i https://somedomain/something.js` or `findsecret -i https://somedomain/something.js -o result` </br> </br>
+`findsecret -i main.js` or `findsecret -i main.js -o result.txt` </br> </br>
+`findsecret -i domains.txt` or `findsecret -i domains.txt -o result.txt`
