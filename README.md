@@ -3,7 +3,7 @@ Find secret keys from JS file
 
 ## Installation
 ### From Source
-1. Install Go on your system
+1. Install Go on your system (min v17.0.0 and GO111MODULE env should be "on")
 2. `go install github.com/burak0x01/findsecret@latest`
 
 ### From Binary
