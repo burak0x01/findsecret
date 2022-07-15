@@ -16,35 +16,58 @@ type Secrets struct {
 }
 
 func main() {
+
+	var JsFile string
+	var secrets []Secrets = readSecrets()
+	var matchedSecrets []string
+
+	checkSecret()
+
 	// flags
 	var input string
 	var output string
-	flag.StringVar(&input, "i", "", "-i something.js \n-i https://domain.com/something.js \n-i domains.txt")
+	flag.StringVar(&input, "i", "", "-i local.js \n-i https://domain.tld/external.js \n-i https://domain.tld")
 	flag.StringVar(&output, "o", "cli", "-o cli \n-o <filename>.txt")
 	flag.Parse()
 
-	// check secrets.json file exist
-	homeDir, err := os.UserHomeDir()
-	check(err)
-	if _, err := os.Stat(homeDir + "/findsecret/secrets.json"); err != nil {
-		downloadSecret()
-	}
-
 	switch checkInput(input) {
 	case "url":
-		checkOutput(input, output, matchSecret(readSecrets(), getExternalJsFile(input)))
+		JsFile = getExternalJsFile(input)
+		matchedSecrets = matchSecret(secrets, JsFile)
+		checkOutput(input, output, matchedSecrets)
 	case "local":
-		checkOutput(input, output, matchSecret(readSecrets(), getLocalJsFile(input)))
-	case "list":
-		for _, url := range getJsList(input) {
-			checkOutput(url, output, matchSecret(readSecrets(), getExternalJsFile(url)))
+		JsFile = getLocalJsFile(input)
+		matchedSecrets = matchSecret(secrets, JsFile)
+		checkOutput(input, output, matchedSecrets)
+	case "domain":
+		JsFileList := getScripts(input)
+
+		for _, v := range JsFileList {
+			// matchedSecrets = matchSecret(secrets, v)
+			// checkOutput(v, output, matchedSecrets)
+			println(v)
 		}
 	}
+	// case "list":
+	// 	JsFile = getExternalJsFile(input)
+	// 	matchedSecrets = matchSecret(secrets, JsFile)
+
+	// 	for _, url := range getJsList(input) {
+	// 		checkOutput(url, output, matchedSecrets)
+	// 	}
 }
 
 func check(e error) {
 	if e != nil {
 		panic(e)
+	}
+}
+
+func checkSecret() {
+	homeDir, err := os.UserHomeDir()
+	check(err)
+	if _, err := os.Stat(homeDir + "/findsecret/secrets.json"); err != nil {
+		downloadSecret()
 	}
 }
 
@@ -69,7 +92,7 @@ func checkInput(input string) string {
 		if isTxt {
 			return "list"
 		} else {
-			return "Please check input"
+			return "domain"
 		}
 	}
 }
@@ -104,25 +127,20 @@ func getJsList(input string) []string {
 // Download secrets.json
 func downloadSecret() {
 
-	// get user home directory
 	homeDir, err := os.UserHomeDir()
 	check(err)
 
-	// make findsecret directory
 	err2 := os.Mkdir(homeDir+"/findsecret", 0777)
 	check(err2)
 
-	// create secrets.json
 	jsonFile, err3 := os.Create(homeDir + "/findsecret/secrets.json")
 	check(err3)
 	defer jsonFile.Close()
 
-	// get external data
 	resp, err4 := http.Get("https://raw.githubusercontent.com/burak0x01/findsecret/main/secrets.json")
 	check(err4)
 	defer resp.Body.Close()
 
-	// write response data to the file
 	_, err5 := io.Copy(jsonFile, resp.Body)
 	check(err5)
 }
@@ -197,7 +215,6 @@ func getLocalJsFile(input string) string {
 	return string(data)
 }
 
-// her data için yeniden dosya yaratılıp içine yazılıyor
 func writeFile(input, path string, data []string) {
 
 	if len(data) != 0 {
@@ -220,5 +237,39 @@ func writeCli(input string, data []string) {
 		for _, v := range data {
 			println("\t" + v)
 		}
+	}
+}
+
+func getScripts(url string) []string {
+
+	var jsFileList []string
+
+	resp, err := http.Get(url)
+	check(err)
+
+	if resp.StatusCode == 200 {
+		body, err2 := io.ReadAll(resp.Body)
+		check(err2)
+
+		re := regexp.MustCompile(`https?://.*\.js`)
+		match := re.FindAllString(string(body), -1)
+
+		for _, url := range match {
+
+			resp2, err3 := http.Get(url)
+			if err3 != nil {
+				continue
+			}
+
+			if resp2.StatusCode == 200 {
+				jsFileList = append(jsFileList, url)
+			}
+		}
+
+		return jsFileList
+	} else {
+		jsFileList = append(jsFileList, "check the url please !!!")
+
+		return jsFileList
 	}
 }
