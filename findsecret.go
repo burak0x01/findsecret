@@ -21,9 +21,10 @@ func main() {
 	var secrets []Secrets = readSecrets()
 	var matchedSecrets []string
 
+	println("\n[!] Working\n")
+
 	checkSecret()
 
-	// flags
 	var input string
 	var output string
 	flag.StringVar(&input, "i", "", "-i local.js \n-i https://domain.tld/external.js \n-i https://domain.tld")
@@ -35,18 +36,24 @@ func main() {
 		JsFile = getExternalJsFile(input)
 		matchedSecrets = matchSecret(secrets, JsFile)
 		checkOutput(input, output, matchedSecrets)
+		println("[!] Completed\n")
 	case "local":
 		JsFile = getLocalJsFile(input)
 		matchedSecrets = matchSecret(secrets, JsFile)
 		checkOutput(input, output, matchedSecrets)
+		println("[!] Completed\n")
 	case "domain":
 		JsFileList := getScripts(input)
-
+		println("[!] Found", len(JsFileList), "JS file\n")
 		for _, v := range JsFileList {
-			// matchedSecrets = matchSecret(secrets, v)
-			// checkOutput(v, output, matchedSecrets)
-			println(v)
+			JsFile = getExternalJsFile(v)
+			matchedSecrets = matchSecret(secrets, JsFile)
+			checkOutput(v, output, matchedSecrets)
 		}
+		println("[!] Completed\n")
+	case "not valid":
+		println("[!] unrecognized input\n")
+
 	}
 	// case "list":
 	// 	JsFile = getExternalJsFile(input)
@@ -73,28 +80,33 @@ func checkSecret() {
 
 func checkInput(input string) string {
 
-	isJS, err := regexp.MatchString(`^.*\.js(\?.*=?.*)?$`, input)
-	check(err)
+	if len(input) >= 4 {
+		isJS, err := regexp.MatchString(`^.*\.js(\?.*=?.*)?$`, input)
+		check(err)
 
-	isURL, err := regexp.MatchString(`https?://.*`, input)
-	check(err)
+		isURL, err := regexp.MatchString(`https?://.*`, input)
+		check(err)
 
-	isTxt, err := regexp.MatchString(`^.*\.txt$`, input)
-	check(err)
+		isTxt, err := regexp.MatchString(`^.*\.txt$`, input)
+		check(err)
 
-	if isJS {
-		if isURL {
-			return "url"
+		if isJS {
+			if isURL {
+				return "url"
+			} else {
+				return "local"
+			}
 		} else {
-			return "local"
+			if isTxt {
+				return "list"
+			} else {
+				return "domain"
+			}
 		}
 	} else {
-		if isTxt {
-			return "list"
-		} else {
-			return "domain"
-		}
+		return "not valid"
 	}
+
 }
 
 func checkOutput(input, output string, result []string) {
@@ -124,7 +136,6 @@ func getJsList(input string) []string {
 	return lines
 }
 
-// Download secrets.json
 func downloadSecret() {
 
 	homeDir, err := os.UserHomeDir()
@@ -162,7 +173,6 @@ func readSecrets() []Secrets {
 	return secrets
 }
 
-// match secrets and return array
 func matchSecret(secrets []Secrets, data string) []string {
 
 	matchedArray := []string{}
@@ -222,21 +232,23 @@ func writeFile(input, path string, data []string) {
 		check(err)
 		defer file.Close()
 
-		file.WriteString(input)
+		file.WriteString(input + "\n")
 		for _, line := range data {
 			file.WriteString("\t" + line + "\n")
 		}
+		file.WriteString("\n")
 	}
 }
 
 func writeCli(input string, data []string) {
 
 	if len(data) != 0 {
-		println(input)
+		println("[+]", input)
 
 		for _, v := range data {
 			println("\t" + v)
 		}
+		println()
 	}
 }
 
