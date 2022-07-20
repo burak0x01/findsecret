@@ -18,7 +18,7 @@ Findsecret requires 2 parameters to run: -i (input), -o (output).
 #### Input
 `findsecret -i https://domain.tld` <br>
 `findsecret -i ./local/path/main.js` <br>
-`findsecret -i https://somedomain/something.js` <br><br>
+`findsecret -i https://somedomain/something.js` <br>
 
 #### Output
 `findsecret -i https://domain.tld -o cli (default)` <br>
