@@ -27,3 +27,4 @@ Findsecret requires 2 parameters to run: -i (input), -o (output).
 ### For example 
 `findsecret -i https://findsecret.s3.eu-central-1.amazonaws.com/index.html`
 
+![Screenshot 2022-07-20 102542](https://user-images.githubusercontent.com/60436338/179922445-09657d4a-ebba-4395-85bf-6cf904b43b2a.png)
