@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"encoding/json"
 	"flag"
 	"io"
@@ -118,23 +117,23 @@ func checkOutput(input, output string, result []string) {
 	}
 }
 
-func getJsList(input string) []string {
-	lines := []string{}
+// func getJsList(input string) []string {
+// 	lines := []string{}
 
-	file, err := os.Open(input)
-	check(err)
-	defer file.Close()
+// 	file, err := os.Open(input)
+// 	check(err)
+// 	defer file.Close()
 
-	scanner := bufio.NewScanner(file)
-	err2 := scanner.Err()
-	check(err2)
+// 	scanner := bufio.NewScanner(file)
+// 	err2 := scanner.Err()
+// 	check(err2)
 
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
+// 	for scanner.Scan() {
+// 		lines = append(lines, scanner.Text())
+// 	}
 
-	return lines
-}
+// 	return lines
+// }
 
 func downloadSecret() {
 

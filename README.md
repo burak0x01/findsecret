@@ -15,7 +15,15 @@ You can download the pre-built binaries from the releases page and run. For exam
 ## Usage
 Findsecret requires 2 parameters to run: -i (input), -o (output).
 
+#### Input
+`findsecret -i https://domain.tld` <br>
+`findsecret -i ./local/path/main.js` <br>
+`findsecret -i https://somedomain/something.js` <br><br>
+
+#### Output
+`findsecret -i https://domain.tld -o cli (default)` <br>
+`findsecret -i https://domain.tld -o result.txt` <br><br>
+
 ### For example 
-`findsecret -i https://somedomain/something.js` or `findsecret -i https://somedomain/something.js -o result` </br> </br>
-`findsecret -i main.js` or `findsecret -i main.js -o result.txt` </br> </br>
-`findsecret -i domains.txt` or `findsecret -i domains.txt -o result.txt`
+`findsecret -i https://findsecret.s3.eu-central-1.amazonaws.com/index.html`
+
