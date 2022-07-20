@@ -14,11 +14,11 @@ type Secrets struct {
 	Patterns []string `json:"patterns"`
 }
 
-func main() {
+var JsFile string
+var secrets []Secrets
+var matchedSecrets []string
 
-	var JsFile string
-	var secrets []Secrets = readSecrets()
-	var matchedSecrets []string
+func main() {
 
 	println("\n[!] Working\n")
 
@@ -73,7 +73,11 @@ func checkSecret() {
 	homeDir, err := os.UserHomeDir()
 	check(err)
 	if _, err := os.Stat(homeDir + "/findsecret/secrets.json"); err != nil {
+		println("[!] secrets.json downloading...")
+		println("[!] secrets.json download complate")
+		println("[!] ready to Go")
 		downloadSecret()
+		secrets = readSecrets()
 	}
 }
 
