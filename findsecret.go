@@ -78,6 +78,8 @@ func checkSecret() {
 		println("[!] ready to Go")
 		downloadSecret()
 		secrets = readSecrets()
+	} else {
+		secrets = readSecrets()
 	}
 }
 
