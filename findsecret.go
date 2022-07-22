@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"encoding/json"
 	"flag"
 	"io"
@@ -44,23 +45,32 @@ func main() {
 	case "domain":
 		JsFileList := getScripts(input)
 		println("[!] Found", len(JsFileList), "JS file\n")
+
 		for _, v := range JsFileList {
+
 			JsFile = getExternalJsFile(v)
 			matchedSecrets = matchSecret(secrets, JsFile)
 			checkOutput(v, output, matchedSecrets)
 		}
 		println("[!] Completed\n")
+
+	case "list":
+
+		for _, url := range getDomainList(input) {
+
+			JsFileList := getScripts(url)
+			println("[!] Found", len(JsFileList), "JS file\n")
+
+			for _, v := range JsFileList {
+				JsFile = getExternalJsFile(v)
+				matchedSecrets = matchSecret(secrets, JsFile)
+				checkOutput(v, output, matchedSecrets)
+			}
+		}
+
 	case "not valid":
 		println("[!] unrecognized input\n")
-
 	}
-	// case "list":
-	// 	JsFile = getExternalJsFile(input)
-	// 	matchedSecrets = matchSecret(secrets, JsFile)
-
-	// 	for _, url := range getJsList(input) {
-	// 		checkOutput(url, output, matchedSecrets)
-	// 	}
 }
 
 func check(e error) {
@@ -123,23 +133,23 @@ func checkOutput(input, output string, result []string) {
 	}
 }
 
-// func getJsList(input string) []string {
-// 	lines := []string{}
+func getDomainList(input string) []string {
+	lines := []string{}
 
-// 	file, err := os.Open(input)
-// 	check(err)
-// 	defer file.Close()
+	file, err := os.Open(input)
+	check(err)
+	defer file.Close()
 
-// 	scanner := bufio.NewScanner(file)
-// 	err2 := scanner.Err()
-// 	check(err2)
+	scanner := bufio.NewScanner(file)
+	err2 := scanner.Err()
+	check(err2)
 
-// 	for scanner.Scan() {
-// 		lines = append(lines, scanner.Text())
-// 	}
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
 
-// 	return lines
-// }
+	return lines
+}
 
 func downloadSecret() {
 
@@ -238,6 +248,7 @@ func writeFile(input, path string, data []string) {
 		defer file.Close()
 
 		file.WriteString(input + "\n")
+
 		for _, line := range data {
 			file.WriteString("\t" + line + "\n")
 		}

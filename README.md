@@ -31,5 +31,5 @@ Findsecret requires 2 parameters to run: -i (input), -o (output).
 
 ### ToDo
 - [X] New input - Domain
-- [ ] New input - Domain list
+- [X] New input - Domain list
 - [ ] Relative url for domain input  
