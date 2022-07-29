@@ -33,3 +33,5 @@ Findsecret requires 2 parameters to run: -i (input), -o (output).
 - [X] New input - Domain
 - [X] New input - Domain list
 - [ ] Relative url for domain input  
+- [ ] New input - JS list
+- [ ] User-Agent option
