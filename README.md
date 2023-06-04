@@ -23,15 +23,3 @@ Findsecret requires 2 parameters to run: -i (input), -o (output).
 #### Output
 `findsecret -i https://domain.tld -o cli (default)` <br>
 `findsecret -i https://domain.tld -o result.txt` <br><br>
-
-### For example 
-`findsecret -i https://findsecret.s3.eu-central-1.amazonaws.com/index.html`
-
-![Screenshot 2022-07-20 102542](https://user-images.githubusercontent.com/60436338/179922445-09657d4a-ebba-4395-85bf-6cf904b43b2a.png)
-
-### ToDo
-- [X] New input - Domain
-- [X] New input - Domain list
-- [ ] Relative url for domain input  
-- [ ] New input - JS list
-- [ ] User-Agent option
